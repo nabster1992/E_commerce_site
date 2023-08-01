@@ -1,0 +1,10 @@
+{% for category in categories %}
+    <a href="{% url 'category_detail' category.slug %}" class="text-white">{{ category.title }}</a>
+{% endfor %}
+
+
+{% if request.user.is.authenticated %}
+    <a href="{% url 'myaccount' %}" class="text-white">My account</a>
+{% endif %}
+
+
