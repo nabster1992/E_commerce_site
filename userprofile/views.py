@@ -3,11 +3,11 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.text import slugify
 from .models import Userprofile
-from store.forms import Productform
-from store.models import Product
+from store.forms import ProductForm
+from store.models import Product, OrderItem, Order
 
 
 def vendor_detail(request, pk):
@@ -24,13 +24,26 @@ def vendor_detail(request, pk):
 @login_required
 def my_store(request):
     products = request.user.products.exclude(status=Product.DELETED)
+    order_items = OrderItem.objects.filter(product__user=request.user)
+    #this ill give you all the order items
 
-    return render(request, 'userprofile/my_store.html', {'products': products}  )
+    return render(request, 'userprofile/my_store.html', {
+        'products': products,
+        'order_items': order_items,
+})
+
+@login_required
+def my_store_order_details(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+
+    return render(request, 'userprofile/my_store_order_details.html', {
+        'order': order 
+        })
 
 @login_required
 def add_product(request):
     if request.method == 'POST':
-        form = Productform(request.POST, request.FILES)
+        form = ProductForm(request.POST, request.FILES)
 
         if form.is_valid():
             title = request.POST.get('title')
@@ -44,7 +57,7 @@ def add_product(request):
 
             return redirect('my_store')
     else:
-        form = Productform()
+        form = ProductForm()
 
         return render(request, 'userprofile/product_form.html',{
             'title':'Add product',
@@ -57,7 +70,7 @@ def edit_product(request, pk):
     product = Product.objects.filter(user=request.user).get(pk=pk)
 
     if request.method == 'POST':
-     form = Productform(request.POST, request.FILES, instance=product)
+     form = ProductForm(request.POST, request.FILES, instance=product)
 
      if form.is_valid():
         form.save()
@@ -67,7 +80,7 @@ def edit_product(request, pk):
         return redirect('my_store')
 
     else:
-        form = Productform(instance=product)
+        form = ProductForm(instance=product)
 
     return render(request, 'userprofile/product_form.html',{ 
         'title':'Edit product',
