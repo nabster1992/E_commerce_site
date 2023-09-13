@@ -2,16 +2,64 @@
 
 {% block title %}Checkout{% endblock %}
 
-{% block content %}
-    <h1 class="mb-6 text-2xl">Checkout</h1>
+    {% block content %}
+        <h1 class="mb-6 text-2xl">Checkout</h1>
 
-    <h2 class="text-xl text-gray-500">Total cost: PKR {{ cart.get_total_cost }}</h2>
+        <h2 class="text-xl text-gray-500">Total cost: PKR {{ cart.get_total_cost }}</h2>
 
-    <form method="post" action=".">
-        {% csrf_token %}
+    
+        
 
         {{ form.as_p }}
 
-        <button class="inline-block px-8 py-4 bg-pink-500 hover:bg-pink-600 text-white text-white">Checkout</button>
-    </form>
+        <button class="inline-block px-8 py-4 bg-pink-500 hover:bg-pink-600 text-white text-white" onclick="buy(event)">Checkout</button>
+    {% endblock %}
+
+    {% block scripts %}
+    <script type="application/javascript" src="https://js.stripe.com/v3/"></script>
+    <script>
+        function buy(event) {
+            event.preventDefault();
+             
+
+            let data = {
+                'first_name': document.getElementById('id_first_name').value,
+                'last_name': document.getElementById('id_last_name').value,  
+                'address': document.getElementById('id_address').value,
+                'zip_code': document.getElementById('id_zip_code').value,
+                'city': document.getElementById('id_city').value,
+            }
+
+            let stripe = Stripe( '{{ pub_key }}' );
+
+            fetch('/cart/checkout/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify(data)
+            })
+            .then(function(response) {
+                return response.json()
+            })
+            .then(function(session){
+                return stripe.redirectToCheckout ({ sessionId: session.session.id })
+            })
+            .then(function(result){
+                if (result.error) {
+                alert(result.error.message)
+                }
+            })
+            .catch(function(error) {
+                alert(error)
+            });
+
+            //when button is clicked, the info from the form is passed to create data,then
+            // pass it into stripe and 
+            //use fetch which is built into the browser and then pass info into backend
+            return false;   
+        }
+    </script>
 {% endblock %}

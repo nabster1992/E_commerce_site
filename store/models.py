@@ -85,7 +85,7 @@ class Order(models.Model):
     total_cost = models.IntegerField(default=0)
     paid_amount = models.IntegerField(blank=True, null=True)
     is_paid = models.BooleanField(default=False)
-    merchant_id = models.CharField(max_length=255)
+    payment_intent = models.CharField(max_length=255)
 
 class OrderItem(models.Model):
     order = models.ForeignKey('Order', related_name='items', on_delete=models.CASCADE)

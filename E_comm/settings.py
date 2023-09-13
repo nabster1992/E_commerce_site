@@ -71,6 +71,12 @@ INTERNAL_IPS = [
 ]
 ROOT_URLCONF = 'E_comm.urls'
 
+
+STRIPE_PUB_KEY = 'pk_test_51NpUyvFa5C6yM2qpO87Rs10Ke47YaDUHCEPU87dD514YmDcA8kLCqYUr3JeBcoMB5bu5DCDZxxBaqnrBMNCnK8kX00XHDTlPRz'
+
+STRIPE_SECRET_KEY = 'sk_test_51NpUyvFa5C6yM2qppZRatFL8bvxan4LnqGR4R1WsOWqY4SY2Ltz1hP7C33imcQSEQLHXI4RqWOPfmzcjwg8Kb4Ql00pJhDeAwz'
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

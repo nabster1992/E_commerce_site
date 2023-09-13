@@ -51,7 +51,7 @@ class Cart(object):
              self.cart[str(p)]['product'] = Product.objects.get(pk=p)
 
 
-         return int(sum(item['product'].price * item['quantity'] for item in self.cart.values())) /200
+         return int(sum(item['product'].price * item['quantity'] for item in self.cart.values())) 
             #we sum together the price of product multiplied by quantity of
             # each items within the cart divided by 100, we then convert so its an integer
         
