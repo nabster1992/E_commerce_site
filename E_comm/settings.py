@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-l#kv5ixtzwtv@m#gid*+^0kmhg7kt8@sz(bf^tyg(v(r-pr1mi
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [143.110.240.126]
 
 CART_SESSION_ID = 'cart'
 SESSION_COOKIE_AGE = 86400
