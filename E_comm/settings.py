@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -81,7 +81,7 @@ STRIPE_SECRET_KEY = 'sk_test_51NpUyvFa5C6yM2qppZRatFL8bvxan4LnqGR4R1WsOWqY4SY2Lt
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates")],
+        'DIRS': [os.path.join(BASE_DIR, "templates/core", "templates/store", "templates/userprofile")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
